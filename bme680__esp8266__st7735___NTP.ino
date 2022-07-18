@@ -20,6 +20,18 @@
   - chanage before upload,  ***** with your data for WIFI, callsing and QTH  
   - made your own correction if is need it, for altitude and pressure;
     for that, find on internet the METAR station near to you and compare data 
+    
+    
+    
+    
+                    ST7735               ESP8266
+                    
+                    CS                      D8
+                    DC                      D3
+                    RST                     D4
+                    SDA                     D7
+                    SCL                     D5
+                    BLK                      +
  ***************************************************************************/
 
 #include <Wire.h>
@@ -35,12 +47,12 @@
 #define TEMP_CORR (-3)   
 #define PIN_SDA D1        
 #define PIN_SCL D2
-#define SEALEVELPRESSURE_HPA (1013.25)
+#define SEALEVELPRESSURE_HPA (1013.25)       // or change it with correction
 
 
 // set WiFi network SSID and password
 const char *ssid     = "********";  // YOUR SSID ROUTER NAME
-const char *password = "********";  // YOUR PSSWORD
+const char *password = "********";  // YOUR ROUTER PASSWORD
 unsigned long unix_epoch;
 WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, "time.nist.gov", 0, 60000);
