@@ -60,22 +60,20 @@ NTPClient timeClient(ntpUDP, "time.nist.gov", 0, 60000);
 Adafruit_BME680 bme; 
 
 TFT_eSPI tft = TFT_eSPI();
-#define TFT_GREY 0x5AEB
 
 void setup() {
   Serial.begin(115200);
   while (!Serial);
   
-  tft.init();
-  tft.fillScreen(TFT_BLUE);
+  //tft.init();
+  tft.init(INITR_BLACKTAB);
   tft.setRotation(3);
-  tft.setTextWrap(false);
- 
+  tft.fillScreen(ST7735_BLUE); 
   if (!bme.begin()) {
     while (1);
   }
 
-  // Set up oversampling and filter initialization
+//Set up oversampling and filter initialization
   bme.setTemperatureOversampling(BME680_OS_8X);
   bme.setHumidityOversampling(BME680_OS_2X);
   bme.setPressureOversampling(BME680_OS_4X);
@@ -101,37 +99,34 @@ void RTC_display()
   {
     previous_dow = weekday(unix_epoch);
     //tft.fillRect(5, 5, 123, 45, ST7735_NAVY);
-    tft.fillScreen(TFT_BLUE);
+    //tft.fillScreen(TFT_GOLD);
     tft.setTextSize(1);
-    tft.setCursor(12, 4);   //24
-    tft.setTextColor(ST7735_RED, ST7735_NAVY);    
+    tft.setCursor(4, 4);   //24
+    tft.setTextColor(ST7735_CYAN);    
     tft.print( dow_matrix[previous_dow-1] );
+  
   }
 
     // print date
-  tft.setCursor(55, 4);   //75
-  tft.setTextColor(ST7735_YELLOW, ST7735_NAVY);     
+  tft.setCursor(66, 4);   //75
+  tft.setTextColor(ST7735_CYAN);     
   tft.printf( " %02u - %02u - %04u", day(unix_epoch), month(unix_epoch), year(unix_epoch) );
-  
+    
     // print info
   tft.setCursor(3, 16); 
-  tft.setTextColor(TFT_WHITE,TFT_BLUE);
+  tft.setTextColor(TFT_WHITE);
   tft.setTextSize(1);                          
   tft.print("KN05WH - ");  // YOUR QTH
-  tft.setCursor(58, 16); 
-  tft.setTextColor(TFT_WHITE,TFT_BLUE);
-  tft.setTextSize(1);                          
+  tft.setCursor(58, 16);                           
   tft.print("UTC TIME ");
-  tft.setCursor(110, 16); 
-  tft.setTextColor(TFT_WHITE,TFT_BLUE);
-  tft.setTextSize(1);                          
-  tft.print("- YO2LDK");   // YOUR callsign
+  tft.setCursor(110, 16);                       
+  tft.print("- YO2LDK");   // YOUR callsign / NAME
 
     // print clock
-  tft.setCursor(0,31 );   //32
-  tft.setTextColor(ST7735_GREEN, ST7735_NAVY);    
+  tft.setCursor(10,30 );   //32
+  tft.setTextColor(ST7735_YELLOW, ST7735_BLUE);    
   tft.setTextSize(2);
-  tft.printf(" %02u : %02u : %02u  ", hour(unix_epoch), minute(unix_epoch), second(unix_epoch) );
+  tft.printf("%02u : %02u : %02u", hour(unix_epoch), minute(unix_epoch), second(unix_epoch) );
 }
 
 // main loop
@@ -145,47 +140,26 @@ void loop() {
   timeClient.update();
   unix_epoch = timeClient.getEpochTime();  
   
-
   RTC_display();
   delay(200);    // wait 200ms
- 
-  
-  tft.setCursor(12, 55);
-  tft.setTextColor(TFT_WHITE,TFT_BLUE);
+   
+  tft.setCursor(16, 55);
+  tft.setTextColor(ST7735_WHITE,ST7735_BLUE);
   tft.setTextSize(1);
   tft.print("Temperature = ");
   tft.print(String(bme.temperature)+(" *C"));
- 
-
-  tft.setCursor(12, 70);
-  tft.setTextColor(TFT_WHITE,TFT_BLUE);
-  tft.setTextSize(1);
+  tft.setCursor(16, 70);
   tft.print("Pressure = ");
   tft.print(String(bme.pressure / 100.0+ 7.4)+ (" hPa"));  //7.4 correction factor (find METAR CLOSE TO YOU)
-  
- 
-  tft.setCursor(12, 85);
-  tft.setTextColor(TFT_WHITE,TFT_BLUE);
-  tft.setTextSize(1);
+  tft.setCursor(16, 85);
   tft.print("Humidity = ");
   tft.print(String(bme.humidity)+ (" %"));
-  
-
-  tft.setCursor(12, 100);
-  tft.setTextColor(TFT_WHITE,TFT_BLUE);
-  tft.setTextSize(1);
+  tft.setCursor(16, 100);
   tft.print("Q Air = ");
   tft.print(String(bme.gas_resistance / 1000.0)+ (" KOhms"));
-  
-
-  tft.setCursor(12, 115);
-  tft.setTextColor(TFT_WHITE,TFT_BLUE);
-  tft.setTextSize(1);
+  tft.setCursor(16, 115);
   tft.print("Altitude = ");
   tft.print(String(bme.readAltitude(SEALEVELPRESSURE_HPA)+ 82)+(" m"));  //82 correction factor (find METAR CLOSE TO YOU)
-  
-
-  //while(1) yield();
 
   //  73 !!!
 }
