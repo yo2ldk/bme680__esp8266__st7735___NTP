@@ -67,6 +67,7 @@ void setup() {
   while (!Serial);
   
   tft.init();
+  tft.fillScreen(TFT_BLUE);
   tft.setRotation(3);
   tft.setTextWrap(false);
  
