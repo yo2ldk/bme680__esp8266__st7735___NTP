@@ -51,8 +51,8 @@
 
 
 // set WiFi network SSID and password
-const char *ssid     = "yo2ldk1";  // YOUR SSID ROUTER NAME
-const char *password = "222429yo2ldk";  // YOUR ROUTER PASSWORD
+const char *ssid     = "xxxxx";        // YOUR SSID ROUTER NAME
+const char *password = "xxxxxxxxxxx";  // YOUR ROUTER PASSWORD
 unsigned long unix_epoch;
 WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, "time.nist.gov", 0, 60000);
